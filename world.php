@@ -26,6 +26,18 @@ if(isset($_GET['country']) && $_GET['country'] !== ''){ // checks country parame
         $stmt->execute(['country' => "%$country%"]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+} else{ // no country entered, show everything
+    if ($lookup === 'cities'){
+        $stmt = $conn->query("
+            SELECT cities.name AS city_name, countries.name AS country_name, cities.district, cities.population
+            FROM cities
+            JOIN countries ON cities.country_code = countries.code
+        ");
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else{
+        $stmt = $conn->query("SELECT * FROM countries");
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>
